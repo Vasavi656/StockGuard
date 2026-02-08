@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Billing</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/sales.js" defer></script>
+</head>
+
+<body>
+<div class="container">
+
+  <nav class="sidebar">
+    <h2>Inventory</h2>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="minstock.html">Min Stock</a></li>
+      <li><a href="expiry.html">Expiry</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="sales.html" class="active">Billing</a></li>
+    </ul>
+  </nav>
+
+  <main class="content">
+    <h1>Billing (POS)</h1>
+
+    <label>Product</label>
+    <select id="productSelect"></select>
+
+    <label>Quantity</label>
+    <input type="number" id="quantity" min="1">
+
+    <button type="button" onclick="addToCart()">Add to Cart</button>
+
+    
+    <h2>Cart</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="cartTable"></tbody>
+    </table>
+
+    <h3>Total: <span id="grandTotal">₹0</span></h3>
+
+    <button type="button" onclick="generateBill()">Generate Bill</button>
+
+    <p id="message"></p>
+  </main>
+
+</div>
+</body>
+</html>

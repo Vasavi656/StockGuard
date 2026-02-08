@@ -51,6 +51,11 @@ public class ProductController {
         return ResponseEntity.ok("Product added successfully.");
     }
 
+    @PostMapping("/bulk")
+    public List<Product> addProducts(@RequestBody List<Product> products) {
+        return productRepository.saveAll(products);
+    }
+    
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable String id){
         return productRepository.findById(id)
@@ -68,7 +73,6 @@ public class ProductController {
             prod.setName(updatedProduct.getName());
             prod.setCategory(updatedProduct.getCategory());
             prod.setPrice(updatedProduct.getPrice());
-            prod.setStock(updatedProduct.getStock());
             prod.setMinStockLevel(updatedProduct.getMinStockLevel());
             return productRepository.save(prod);
         }).orElseThrow(() -> new RuntimeException("Product not found"));

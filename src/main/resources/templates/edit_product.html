@@ -2,22 +2,92 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Edit Product</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f9fb;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        form {
+            width: 400px;
+            margin: 30px auto;
+        }
+
+        label {
+            display: block;
+            margin-top: 14px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 10px;
+            font-size: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .back {
+            text-align: center;
+            display: block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
+
 <body>
-    <h2>Edit Product</h2>
 
-    <form th:action="@{'/products/update/' + ${product.id}}" method="post">
-    <input type="text" name="name" th:value="${product.name}" required />
-    <input type="text" name="category" th:value="${product.category}" required />
-    <input type="number" name="price" th:value="${product.price}" required />
-    <input type="number" name="stock" th:value="${product.stock}" required />
-    <input type="number" name="minStockLevel" th:value="${product.minStockLevel}" required />
-    <input type="date" name="expiryDate" th:value="${product.expiryDate}" required /> <!-- ✅ Added -->
+<h2>✏️ Edit Product</h2>
 
-    <button type="submit">Update</button>
+<form th:action="@{'/products/update/' + ${product.id}}" method="post">
+
+    <label>Product Name</label>
+    <input type="text" name="name" th:value="${product.name}" required>
+
+    <label>Category</label>
+    <input type="text" name="category" th:value="${product.category}" required>
+
+    <label>Price (₹)</label>
+    <input type="number" name="price" step="0.01" th:value="${product.price}" required>
+
+    <label>Minimum Stock Level</label>
+    <input type="number" name="minStockLevel" th:value="${product.minStockLevel}" required>
+
+    <label>Expiry Date</label>
+    <input type="date" name="expiryDate" th:value="${product.expiryDate}" required>
+
+    <button type="submit">Update Product</button>
 </form>
 
-    <br/>
-    <a href="/products">Back to Products</a>
+<a href="/products" class="back">⬅ Back to Products</a>
+
 </body>
 </html>

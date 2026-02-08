@@ -48,7 +48,7 @@ public class ProductUIController {
             prod.setName(updatedProduct.getName());
             prod.setCategory(updatedProduct.getCategory());
             prod.setPrice(updatedProduct.getPrice());
-            prod.setStock(updatedProduct.getStock());
+            // prod.setStock(updatedProduct.getStock());
             prod.setMinStockLevel(updatedProduct.getMinStockLevel());
             prod.setExpiryDate(updatedProduct.getExpiryDate());
             productRepository.save(prod);

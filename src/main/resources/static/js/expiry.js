@@ -13,9 +13,13 @@ async function loadExpiry(days = 7) {
 
   products.forEach(p => {
     const tr = document.createElement("tr");
+
     const expiryDate = new Date(p.expiryDate);
-    const now = new Date();
-    const status = expiryDate < now ? "Expired" : "Expiring Soon";
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    expiryDate.setHours(0, 0, 0, 0);
+
+    const status = expiryDate < today ? "Expired" : "Expiring Soon";
 
     if (status === "Expired") expiredCount++;
     else expiringSoonCount++;

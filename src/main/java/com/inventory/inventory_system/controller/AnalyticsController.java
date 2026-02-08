@@ -22,7 +22,11 @@ public class AnalyticsController {
 
     @GetMapping("/analytics")
     public String showAnalytics(Model model) {
+
         List<Product> products = productRepository.findAll();
+
+        LocalDate today = LocalDate.now();
+        LocalDate sevenDaysLater = today.plusDays(7);
 
         List<String> stockLabels = products.stream()
                 .map(Product::getName)
@@ -33,21 +37,26 @@ public class AnalyticsController {
                 .collect(Collectors.toList());
 
         long expiringSoon = products.stream()
-                .filter(p -> p.getExpiryDate() != null &&
-                        p.getExpiryDate().isBefore(LocalDate.now().plusDays(7)))
+                .filter(p -> p.getExpiryDate() != null)
+                .filter(p ->
+                        !p.getExpiryDate().isBefore(today) &&
+                         p.getExpiryDate().isBefore(sevenDaysLater)
+                )
                 .count();
 
         long expired = products.stream()
-                .filter(p -> p.getExpiryDate() != null &&
-                        p.getExpiryDate().isBefore(LocalDate.now()))
+                .filter(p -> p.getExpiryDate() != null)
+                .filter(p -> p.getExpiryDate().isBefore(today))
                 .count();
 
         long good = products.size() - expiringSoon - expired;
 
         model.addAttribute("stockLabels", stockLabels);
         model.addAttribute("stockValues", stockValues);
-        model.addAttribute("expiryLabels", List.of("Expiring Soon", "Good", "Expired"));
-        model.addAttribute("expiryValues", List.of((int) expiringSoon, (int) good, (int) expired));
+        model.addAttribute("expiryLabels",
+                List.of("Expiring Soon", "Good", "Expired"));
+        model.addAttribute("expiryValues",
+                List.of((int) expiringSoon, (int) good, (int) expired));
 
         return "analytics";
     }

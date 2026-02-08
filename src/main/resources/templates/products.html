@@ -74,39 +74,41 @@
     </table>
 
     <script>
-        function editRow(button) {
-            let row = button.closest("tr");
-            let cells = row.querySelectorAll("td");
-            for (let i = 0; i < cells.length - 1; i++) {
-                let value = cells[i].innerText;
-                cells[i].innerHTML = `<input type="text" value="${value}">`;
-            }
+function editRow(button) {
+    let row = button.closest("tr");
+    let cells = row.querySelectorAll("td");
 
-            button.textContent = "Save";
-            button.setAttribute("onclick", "saveRow(this)");
-        }
+    const editableIndexes = [0, 1, 2, 4, 5];
 
-        function saveRow(button) {
-            let row = button.closest("tr");
-            let id = row.getAttribute("data-id");
-            let inputs = row.querySelectorAll("input");
+    editableIndexes.forEach(i => {
+        let value = cells[i].innerText;
+        let type = (i === 5) ? "date" : "text";
+        cells[i].innerHTML = `<input type="${type}" value="${value}">`;
+    });
 
-            let updatedProduct = {
-                name: inputs[0].value,
-                category: inputs[1].value,
-                price: inputs[2].value,
-                stock: inputs[3].value,
-                minStockLevel: inputs[4].value
-            };
+    button.textContent = "Save";
+    button.setAttribute("onclick", "saveRow(this)");
+}
+function saveRow(button) {
+    let row = button.closest("tr");
+    let id = row.getAttribute("data-id");
+    let inputs = row.querySelectorAll("input");
 
-            fetch(`/products/update/${id}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(updatedProduct)
-            }).then(() => {
-                location.reload(); 
-            });
-        }
-    </script>
+    let updatedProduct = {
+        name: inputs[0].value,
+        category: inputs[1].value,
+        price: inputs[2].value,
+        minStockLevel: inputs[3].value,
+        expiryDate: inputs[4].value
+    };
+
+    fetch(`/api/products/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedProduct)
+    }).then(() => location.reload());
+}
+</script>
+
 </body>
 </html>

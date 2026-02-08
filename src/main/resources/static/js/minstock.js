@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const tableBody = document.querySelector("#minStockTable");
+  const tableBody = document.getElementById("minStockTable");
   const chartCanvas = document.getElementById("minStockChart");
   let chartInstance = null;
 
@@ -8,27 +8,27 @@ document.addEventListener("DOMContentLoaded", async () => {
       const response = await fetch("/api/products");
       const products = await response.json();
 
+      const lowStockProducts = products.filter(
+        p => p.stock <= p.minStockLevel
+      );
+
       tableBody.innerHTML = "";
 
-      products.forEach(prod => {
+      lowStockProducts.forEach(p => {
         const row = document.createElement("tr");
         row.innerHTML = `
-          <td>${prod.id}</td>
-          <td>${prod.name}</td>
-          <td>${prod.stock}</td>
-          <td>${prod.minStockLevel}</td>
+          <td>${p.id}</td>
+          <td>${p.name}</td>
+          <td>${p.stock}</td>
+          <td>${p.minStockLevel}</td>
         `;
         tableBody.appendChild(row);
       });
 
-      const labels = products.map(p => p.name);
-      const quantities = products.map(p => p.stock);
-
-      const colors = products.map(p => {
-        if (p.stock < p.minStockLevel) return "rgba(255, 99, 132, 0.7)"; // red
-        if (p.stock === p.minStockLevel) return "rgba(54, 162, 235, 0.7)"; // blue
-        return "rgba(75, 192, 192, 0.7)"; // green
-      });
+      
+      const labels = lowStockProducts.map(p => p.name);
+      const currentStock = lowStockProducts.map(p => p.stock);
+      const minStock = lowStockProducts.map(p => p.minStockLevel);
 
       if (chartInstance) chartInstance.destroy();
 
@@ -36,34 +36,39 @@ document.addEventListener("DOMContentLoaded", async () => {
         type: "bar",
         data: {
           labels: labels,
-          datasets: [{
-            label: "Stock Quantity",
-            data: quantities,
-            backgroundColor: colors,
-            borderColor: colors.map(c => c.replace("0.7", "1")),
-            borderWidth: 1,
-            barThickness: 25
-          }]
+          datasets: [
+            {
+              label: "Current Stock",
+              data: currentStock,
+              backgroundColor: "rgba(255, 99, 132, 0.7)"
+            },
+            {
+              label: "Minimum Required",
+              data: minStock,
+              backgroundColor: "rgba(54, 162, 235, 0.7)"
+            }
+          ]
         },
         options: {
           responsive: true,
           plugins: {
-            legend: { display: false },
             title: {
               display: true,
-              text: "Product Stock Levels",
-              font: { size: 16 }
+              text: "Low Stock vs Minimum Stock Level"
             }
           },
-          scales: { y: { beginAtZero: true } }
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
         }
       });
 
-    } catch (error) {
-      console.error("Error fetching products:", error);
+    } catch (err) {
+      console.error("Error loading min stock data:", err);
     }
   }
 
   loadMinStockData();
-  setInterval(loadMinStockData, 10000); 
 });

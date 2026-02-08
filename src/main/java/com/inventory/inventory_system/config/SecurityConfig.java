@@ -10,13 +10,23 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
-            .csrf(csrf -> csrf.disable()) // disable CSRF for APIs
-            .authorizeHttpRequests(auth -> auth
-                .anyRequest().authenticated() // require auth for all endpoints
+            .csrf(csrf -> csrf.disable())
+
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(
+                    org.springframework.security.config.http.SessionCreationPolicy.STATELESS
+                )
             )
-            .httpBasic(); // enable Basic Auth
+
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/**").permitAll()
+                .anyRequest().permitAll()
+            )
+
+            .httpBasic(httpBasic -> httpBasic.disable());
+
         return http.build();
     }
 }
-

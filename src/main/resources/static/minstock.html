@@ -4,18 +4,20 @@
   <meta charset="UTF-8">
   <title>Minimum Stock</title>
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/minstock.js" defer></script>
 </head>
+
 <style>
   #minStockChart {
-  width: 100%;
-  max-width: 600px;
-  height: 300px;
-  display: block;
-  margin: 0 auto; 
+    width: 100%;
+    max-width: 600px;
+    height: 350px;
+    margin: 30px auto;
+    display: block;
   }
-
-
 </style>
+
 <body>
   <div class="container">
     <nav class="sidebar">
@@ -25,33 +27,28 @@
         <li><a href="minstock.html" class="active">Min Stock</a></li>
         <li><a href="expiry.html">Expiry</a></li>
         <li><a href="products.html">Products</a></li>
+        <li><a href="sales.html">Sales</a></li>
+
       </ul>
     </nav>
 
     <main class="content">
-  <h1>Products Below Minimum Stock</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th><th>Name</th><th>Stock</th><th>Min Required</th>
-      </tr>
-    </thead>
-    <tbody id="minStockTable"></tbody>
-  </table>
+      <h1>Products Below Minimum Stock</h1>
 
-  <div style="margin-top: 20px;">
-    <canvas id="minStockChart"></canvas>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Current Stock</th>
+            <th>Minimum Required</th>
+          </tr>
+        </thead>
+        <tbody id="minStockTable"></tbody>
+      </table>
+
+      <canvas id="minStockChart"></canvas>
+    </main>
   </div>
-</main>
-
-  </div>
-
-  <div style="max-width: 600px; margin: 30px auto;">
-    <canvas id="minStockChart"></canvas>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="js/minstock.js"></script>
-
 </body>
 </html>
