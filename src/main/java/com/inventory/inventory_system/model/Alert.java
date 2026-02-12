@@ -5,41 +5,28 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "alerts")  
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+@Document(collection = "alerts")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Alert {
-    
+
     @Id
-    private String id; 
+    private String id;
+
     private String message;
+
     private LocalDateTime createdAt;
 
-    
-    public Alert() {}
+    private boolean read;
 
-    
     public Alert(String message) {
         this.message = message;
         this.createdAt = LocalDateTime.now();
-    }
-
-    
-    public String getId() {
-        return id;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+        this.read = false;
     }
 }
